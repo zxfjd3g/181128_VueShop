@@ -7,10 +7,10 @@
             这让异步方法可以像同步方法那样返回值，但并不是立即返回最终执行结果，而是一个能代表未来出现的结果的promise对象
         promise对象的3种状态值
             pending(未决定的): 初始状态，既不是成功，也不是失败状态。
-            fulfilled(完成的): 意味着操作成功完成。  
+            resolved(完成的): 意味着操作成功完成。  
             rejected(拒绝的): 意味着操作失败。
         promise对象的状态变化(2种)
-            pending ==> fulfilled: 调用resolve()
+            pending ==> resolved: 调用resolve()
             pending ==> rejected: 调用reject()
             注意: promise的状态确定后就不可再转换为其它状态
         promise对象内部隐藏的属性
@@ -24,7 +24,7 @@
     3). resolve: 解决
         由Promise函数内部定义, 但由我们调用的函数
         当异步任务成功时, 我们应该调用resolve函数, 并传入需要的value
-        resolve函数内部: 同步将promise对象的状态值变为fulfilled/resolved, 异步调用已经存储的所有onFulfilled回调函数
+        resolve函数内部: 同步将promise对象的状态值变为resolved/resolved, 异步调用已经存储的所有onFulfilled回调函数
         
     4). reject: 拒绝
         由Promise函数内部定义, 但由我们调用的函数
@@ -32,14 +32,14 @@
         reject函数内部: 同步将promise对象的状态值变为rejected, 异步调用已经存储的所有onRejected回调函数
         
     5). then: 接着
-        promise对象的方法: then(onFulfilled/onRsolved函数, onRejected函数), 返回值为一个新的promise对象
+        promise对象的方法: then(onRsolved函数, onRejected函数), 返回值为一个新的promise对象
         作用: 用来指定promise的状态为fulfilled或rejected时的回调函数
         注意: then()方法的返回值为新的promise对象, 这样可以进行.then()的链式调用
     
-    6). onFulfilled: 当已解决时
+    6). onResolved: 当已解决时
         由then()的第一个参数指定的回调函数: (value) => {}
         当promise的状态为fulfilled时自动调用
-        onFulfilled函数的返回值:
+        onResolved函数的返回值:
             返回新的promise对象: 
             返回其它或不返回:
             
