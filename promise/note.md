@@ -65,7 +65,7 @@
     用来实现批量执行多个promise的异步操作, 返回一个新的promise: Promise.all([promise1, promise2, ...])
     只有当所有异步操作都fulfilled后, 新promise才会变为fulfilled状态, 只要有一个变为rejected, 新promise直接变为rejected
     面试题: 实现一次发多个请求, 只有都成功后才去做处理?
-        
+    
 # 2. 自定义Promise
 ## 1). 整体结构
     /*

@@ -6,6 +6,30 @@
 </head>
 <body>
 
+<script type="text/javascript">
+  const first = () => (new Promise((resolve,reject)=>{
+    console.log(3);  // 1
+    let p = new Promise((resolve, reject)=>{
+      console.log(7);  // 2
+      setTimeout(()=>{
+        console.log(5);
+        resolve(6);
+      },0)
+      resolve(1);
+    });
+    resolve(2);
+    p.then((arg)=>{
+      console.log(arg);
+    });
+
+  }));
+
+  first().then((arg)=>{
+    console.log(arg);
+  });
+  console.log(4);
+</script>
+
 
 <!--promise的基本使用-->
 <!--
@@ -25,6 +49,64 @@
 
   console.log(promise)
 </script>-->
+
+<!--
+异步实现方式:
+1). 回调
+2). promise ==> gernator ==> async/await
+-->
+<script type="text/javascript">
+  // 成功的回调函数
+  function successCallback(result) {
+    console.log("声音文件创建成功: " + result);
+  }
+
+  // 失败的回调函数
+  function failureCallback(error) {
+    console.log("声音文件创建失败: " + error);
+  }
+
+  // 回调: 执行异步处理前就得指定回调函数
+  createAudioFileAsync(audioSettings, successCallback, failureCallback)
+
+  // promise: 创建promise对象(内部会立即执行异步处理)后, 再指定回调函数(甚至可以异步处理结束后)
+  createAudioFileAsync(audioSettings).then(successCallback, failureCallback);
+
+  const p = new Promise ((resolve, reject) => {
+
+    // 执行异步处理
+    axios.get()
+  })
+
+  p.then()
+
+
+</script>
+
+<!--
+回调地狱:
+解决: 使用promise
+-->
+<script type="text/javascript">
+  doSomething(function(result) {
+    doSomethingElse(result, function(newResult) {
+      doThirdThing(newResult, function(finalResult) {
+        console.log('Got the final result: ' + finalResult);
+      }, failureCallback);
+    }, failureCallback);
+  }, failureCallback);
+
+  doSomething()
+    .then(result => doSomethingElse(result))
+    .then(newResult => doThirdThing(newResult))
+    .then(finalResult => {
+      console.log(`Got the final result: ${finalResult}`);
+    })
+    .catch(failureCallback);
+</script>
+
+
+
 
 <!--promise相关代码执行顺序-->
 <!--
@@ -234,6 +316,10 @@
   Promise.all([p1, p3, p2]).then(values => console.log(values), reason => {console.log(reason)})
 </script>
 -->
+
+<script type="text/javascript">
+
+</script>
 
 
 </body>
