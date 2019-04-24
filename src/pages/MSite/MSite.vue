@@ -1,7 +1,7 @@
 <template>
   <section class="msite">
     <!--首页头部-->
-    <Header title="xxxx">
+    <Header :title="address.name || '正在获取中...'">
       <span class="header_search" slot="left">
         <i class="iconfont icon-sousuo"></i>
       </span>
@@ -130,6 +130,7 @@
   </section>
 </template>
 <script>
+  import {mapState} from 'vuex'
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.css'
 
@@ -137,6 +138,11 @@
 
   export default {
     mounted() {
+
+      // 获取商家列表和分类列表
+      this.$store.dispatch('getShops')
+      this.$store.dispatch('getCategorys')
+
       // 创建时机: 在数据页面显示之后创建
       new Swiper('.swiper-container', {
         loop: true, // 循环模式选项
@@ -145,6 +151,10 @@
           el: '.swiper-pagination',
         },
       })
+    },
+
+    computed: {
+      ...mapState(['address'])
     },
 
     components: {

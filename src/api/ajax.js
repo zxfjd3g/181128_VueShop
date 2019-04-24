@@ -7,6 +7,8 @@
     1. 统一处理请求异常
     2. 异步返回的不是reponse, 而直接是response.data
  */
+import axios from 'axios'
+
 export default function ajax(url, data={}, method='GET') {
 
   return new Promise((resolve, reject) => {
