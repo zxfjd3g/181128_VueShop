@@ -26,4 +26,49 @@
     1). 底部导航组件: FooterGuide
        编程式路由导航
        动态class
+
+# day02
+## 1. 拆分组件
+    2). 导航路由组件: 
+        MSite
+        Search
+        Order
+        Profile
+    3). 抽取头部组件: Header, 
+        通过props向组件传递数据
+        通过slot向组件传递标签
+    4). 抽取商家列表组件 
+        ShopList
+    5). 登陆/注册的路由组件: Login
+        FooterGuide的显示/隐藏: 通过路由的meta
     
+## 2. 启动后台应用并测试
+    运行后台项目(启动mongodb服务), 
+    使用postman测试后台接口, 如果不一致, 修改接口文档
+    
+## 3. 异步显示数据
+    1). 封装ajax: 
+        promise+axios封装ajax请求的函数
+        封装每个接口对应的请求函数(能根据接口文档定义)
+        解决ajax的跨越域问题: 配置代理, 对代理的理解
+    2). vuex编码
+        创建所有相关的模块: store/index|state|mutations|actions|getters|mutation-types
+        设计state: 从后台获取的数据
+        实现actions: 
+            定义异步action: async/await
+            流程:　发ajax获取数据, commit给mutation
+        实现mutations: 给状态赋值
+        实现index: 创建store对象
+        main.js: 配置store
+    3). 组件异步显示数据
+        在mounted()通过$store.dispatch('actionName')来异步获取后台数据到state中
+        mapState(['xxx'])读取state中数据到组件中
+        在模板中显示xxx的数据
+     
+## 4. 异步显示分类轮播
+    通过vuex获取categorys数组(发请求, 读取)
+    对数据进行整合一计算(维变为特定的二维数组)
+    使用Swiper显示轮播, 如何在界面更新之后创建Swiper对象?
+        1). 使用watch+$nextTick( () =>{界面更新之后立即执行})
+        2). 使用回调+$nextTick()	
+    使用svg图片实现loading的效果

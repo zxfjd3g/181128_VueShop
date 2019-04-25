@@ -44,7 +44,7 @@
       // 异步调用所有待处理的onRejected回调函数
       setTimeout(() => {
         self.callbacks.forEach(obj => {
-          obj.onRejected(value)
+          obj.onRejected(reason)
         })
       })
     }
@@ -64,6 +64,10 @@
   MyPromise.prototype.then = function (onResolved, onRejected) {
     const self = this
     let promise2 // 用来保存内部产生并返回的新的promsie
+
+    // 如果onResolved或onRejected不是函数, 指定一个默认的回调函数
+    onResolved = typeof onResolved === 'function' ? onResolved : value => value
+    onRejected = typeof onRejected === 'function' ? onRejected : reason => {throw reason}
 
     if (self.status === 'resolved') { // 如果当前promise的状态已经是成功(resolved)
       promise2 = new Promise((resolve, reject) => {
@@ -158,9 +162,9 @@
    */
   MyPromise.resolve = function (value) {
     return new MyPromise((resolve, reject) => {
-      if (value instanceof MyPromise) {
+      if (value instanceof MyPromise) { // 如果传入的是promise对象, 将此promise的结果值作为返回promise的结果值
         value.then(resolve, reject)
-      } else {
+      } else { // 将value作为返回promise的成功结果值
         resolve(value)
       }
     })
@@ -172,6 +176,7 @@
    */
   MyPromise.reject = function (reason) {
     return new MyPromise((resolve, reject) => {
+      // 将传入的参数作为返回promise的失败结果值
       reject(reason)
     })
   }
@@ -180,20 +185,31 @@
   返回一个新的promise对象, 只有promises中所有promise都产生成功value时, 才最终成功, 只要有一个失败就直接失败
    */
   MyPromise.all = function (promises) {
+    // 返回一个新的promise
     return new MyPromise((resolve, reject) => {
+      // 已成功的数量
       let resolvedCount = 0
-      const promiseLength = promises.length
-      const values = new Array(promiseLength)
-      for (let i = 0; i < promiseLength; i++) {
+      // 待处理的promises数组的长度
+      const promisesLength = promises.length
+      // 准备一个保存成功值的数组
+      const values = new Array(promisesLength)
+      // 遍历每个待处理的promise
+      for (let i = 0; i < promisesLength; i++) {
+        // promises中元素可能不是一个数组, 需要用resolve包装一下
         Promise.resolve(promises[i]).then(
           value => {
+            // 成功当前promise成功的值到对应的下标
             values[i] = value
+            // 成功的数量加1
             resolvedCount++
-            if(resolvedCount===promiseLength) {
+            // 一旦全部成功
+            if(resolvedCount===promisesLength) {
+              // 将所有成功值的数组作为返回promise对象的成功结果值
               resolve(values)
             }
           },
           reason => {
+            // 一旦有一个promise产生了失败结果值, 将其作为返回promise对象的失败结果值
             reject(reason)
           }
         )

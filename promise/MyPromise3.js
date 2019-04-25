@@ -44,7 +44,7 @@
       // 异步调用所有待处理的onRejected回调函数
       setTimeout(() => {
         self.callbacks.forEach(obj => {
-          obj.onRejected(value)
+          obj.onRejected(reason)
         })
       })
     }

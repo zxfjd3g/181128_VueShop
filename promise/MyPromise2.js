@@ -11,6 +11,8 @@
   function MyPromise(excutor) {
 
     const self = this
+
+
     self.status = 'pending' // 状态值, 初始状态为pending, 成功了变为resolved, 失败了变为rejected
     self.data = undefined // 用来保存成功value或失败reason的属性
     self.callbacks = [] // 用来保存所有待调用的包含onResolved和onRejected回调函数的对象的数组
@@ -44,7 +46,7 @@
       // 异步调用所有待处理的onRejected回调函数
       setTimeout(() => {
         self.callbacks.forEach(obj => {
-          obj.onRejected(value)
+          obj.onRejected(reason)
         })
       })
     }
