@@ -24,6 +24,12 @@
       2. 异步调用成功的回调函数
      */
     function resolve (value) {
+
+      if(self.status!==pending) { // 如果当前不是pending, 直接结束
+        return
+      }
+
+
       // 1. 同步修改状态和保存数据
       self.status = 'resolved'
       self.data = value
@@ -42,7 +48,12 @@
       1. 同步修改状态和保存数据
       2. 异步调用失败的回调函数
      */
-    function reject (reason) {
+    function reject (reason) { // 如果当前不是pending, 直接结束
+
+      if(self.status!==pending) {
+        return
+      }
+
       // 1. 同步修改状态和保存数据
       self.status = 'rejected'
       self.data = reason

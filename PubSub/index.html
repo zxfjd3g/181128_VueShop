@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>自定义PubSub</title>
+</head>
+<body>
+
+
+<script type="text/javascript" src="./PubSub2.js"></script>
+<script type="text/javascript">
+  const token1 = PubSub.subscribe('add', (data) => {
+    console.log('add1', data)
+  })
+  const token2 = PubSub.subscribe('add', (data) => {
+    console.log('add2', data)
+  })
+  const token3 = PubSub.subscribe('remove', (data) => {
+    console.log('remove', data)
+  })
+
+  // PubSub.unsubscribe(token1)
+  PubSub.unsubscribe('add')
+
+  PubSub.publish('add', 'atguigu')
+  console.log('publish() after')
+  PubSub.publishSync('add', 'damu')
+  console.log('publishSync() after')
+
+  PubSub.publish('remove', 123)
+
+
+
+</script>
+</body>
+</html>
