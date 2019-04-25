@@ -7,7 +7,7 @@
   excutor: 同步执行回调函数: (resolve, reject) => {}
    */
   function Promise(excutor) {
-    console.log('Promise()', this)
+    // console.log('Promise()', this)
     const self = this
 
     // 1. 初始化属性
@@ -68,7 +68,57 @@
   函数的返回值是一个新的promise
    */
   Promise.prototype.then = function (onResolved, onRejected) {
-    
+    const self = this
+    let promise2
+
+    // 如果onResolved/onRejected不是函数, 可它指定一个默认的函数
+    onResolved = typeof onResolved==='function' ? onResolved : value => value  // 指定返回的promise为一个成功状态, 结果值为 value
+    onRejected = typeof onRejected === 'function' ? onRejected : reason => {throw reason} // 指定返回的promise为一个失败状态, 结果值为reason
+
+    function action(callback, resolve, reject) {
+      // 1. 抛出异常  ===> 返回的promise变为rejected
+      try {
+        const x = callback(self.data)
+        // 2. 返回一个新的promise ===> 得到新的promise的结果值作为返回的promise的结果值
+        if(x instanceof Promise) {
+          x.then(resolve, reject) // 一旦x成功了, resolve(value), 一旦x失败了: reject(reason)
+        } else {
+          // 3. 返回一个一般值(undefined) ===> 将这个值作为返回的promise的成功值
+          resolve(x)
+        }
+      } catch (error) {
+        reject(error)
+      }
+    }
+
+    if(self.status==='resolved') {  // 当前promise已经成功了
+      promise2 = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          action(onResolved, resolve, reject)
+        })
+      })
+    } else if (self.status==='rejected') { // 当前promise已经失败了
+      promise2 = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          action(onRejected, resolve, reject)
+        })
+      })
+    } else { // 当前promise还未确定 pending
+      promise2 = new Promise((resolve, reject) => {
+        // 将onResolved和onRejected保存起来
+        self.callbacks.push({
+          onResolved (value) {
+            action(onResolved, resolve, reject)
+          },
+          onRejected (reason) {
+            action(onRejected, resolve, reject)
+          }
+        })
+      })
+    }
+
+    return promise2
+
   }
 
   /*
@@ -84,14 +134,23 @@
   value也可能是一个promise
    */
   Promise.resolve = function (value) {
-    
+    return new Promise((resolve, reject) => {
+      if (value instanceof Promise) { // 如果传入的是promise对象, 将此promise的结果值作为返回promise的结果值
+        value.then(resolve, reject)
+      } else { // 将value作为返回promise的成功结果值
+        resolve(value)
+      }
+    })
   }
 
   /*
   返回一个带有拒绝原因reason参数的Promise对象。
    */
   Promise.reject = function (reason) {
-    
+    return new Promise((resolve, reject) => {
+      // 将传入的参数作为返回promise的失败结果值
+      reject(reason)
+    })
   }
 
   /*

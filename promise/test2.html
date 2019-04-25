@@ -6,6 +6,8 @@
 </head>
 <body>
 <script type="text/javascript" src="./Promise.js"></script>
+<!--
+
 <script type="text/javascript">
   const p = new Promise((resolve, reject) => { // excutor
 
@@ -32,6 +34,41 @@
 
   })
 </script>
+-->
+
+<script type="text/javascript">
+  new Promise((resolve, reject) => { // excutor
+    // resolve(1) // 先修改状态为成功并保存数据, 后面指定的回调函数, 只调用成功的onResolved回调函数(异步)
+    reject(1) // 先修改状态为失败并保存数据, 后面指定的回调函数, 只调用失败的onRejected回调函数(异步)
+    /*setTimeout(() => { // 先指定回调函数, 内部需要先保存回调函数, 后面resolve()内部修改状态, 保存数据, 调用回调函数(异步)
+      resolve(1)
+    })*/
+  }).then(value => {
+    console.log('p1 onResolved()', value)
+    return 2
+    // throw 3
+    // return Promise.resolve(4)
+    // return Promise.reject(4)
+  }, reason => {
+    console.log('p1 onRejected()', reason)
+    // return 2
+    //return Promise.resolve(4)
+    // return Promise.reject(4)
+  }).then(value => {
+    console.log('p2 onResolved()', value)
+    throw 5
+  }, reason => {
+    console.log('p2 onRejected()', reason)
+  }).catch(reason => {
+    console.log('p3 onRejected()', reason)
+  })
+</script>
+<!--
+then()返回的promise的状态和结果数据由当前promise对象的回调函数的返回值
+  1. 抛出异常  ===> 返回的promise变为rejected
+  2. 返回一个新的promise ===> 得到新的promise的结果值作为返回的promise的结果值
+  3. 返回一个一般值(undefined) ===> 将这个值作为返回的promise的成功值
+-->
 
 
 </body>
