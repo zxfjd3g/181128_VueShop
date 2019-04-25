@@ -135,9 +135,9 @@
    */
   Promise.resolve = function (value) {
     return new Promise((resolve, reject) => {
-      if (value instanceof Promise) { // 如果传入的是promise对象, 将此promise的结果值作为返回promise的结果值
-        value.then(resolve, reject)
-      } else { // 将value作为返回promise的成功结果值
+      if(value instanceof Promise) { // 如果value是一个promise, 取这个promise的结果值作为返回的promise的结果值
+        value.then(resolve, reject) // 如果value成功, 调用resolve(val), 如果value失败了, 调用reject(reason)
+      } else {
         resolve(value)
       }
     })
@@ -148,7 +148,6 @@
    */
   Promise.reject = function (reason) {
     return new Promise((resolve, reject) => {
-      // 将传入的参数作为返回promise的失败结果值
       reject(reason)
     })
   }
@@ -158,7 +157,31 @@
     只有当promises中所有的都成功了, 返回的promise才成功, 只要有一个失败, 返回的promise就失败了
    */
   Promise.all = function (promises) {
-    
+    return new Promise((resolve, reject) => {
+
+      let resolvedCount = 0 // 用来保存已成功的个数
+      const promisesLength = promises.length // 所有待处理promise个数
+      const values = new Array(promisesLength) // 存储所有成功value的数组
+      promises.forEach((p, index) => {
+        (function (index) {
+          // promises中元素可能不是promise对象, 需要用resolve()包装一下
+          Promise.resolve(p).then(
+            value => {
+              values[index] = value // 保存到values中对应的下标
+              resolvedCount++
+              // 如果全部成功了, resolve(values)
+              if(resolvedCount===promisesLength) {
+                resolve(values)
+              }
+            },
+            reason => {
+              // 只要一个失败了, reject(reason)
+              reject(reason)
+            }
+          )
+        })(index)
+      })
+    })
   }
   
   window.Promise = Promise

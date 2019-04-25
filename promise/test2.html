@@ -35,7 +35,7 @@
   })
 </script>
 -->
-
+<!--
 <script type="text/javascript">
   new Promise((resolve, reject) => { // excutor
     // resolve(1) // 先修改状态为成功并保存数据, 后面指定的回调函数, 只调用成功的onResolved回调函数(异步)
@@ -62,13 +62,26 @@
   }).catch(reason => {
     console.log('p3 onRejected()', reason)
   })
-</script>
+</script>-->
 <!--
 then()返回的promise的状态和结果数据由当前promise对象的回调函数的返回值
   1. 抛出异常  ===> 返回的promise变为rejected
   2. 返回一个新的promise ===> 得到新的promise的结果值作为返回的promise的结果值
   3. 返回一个一般值(undefined) ===> 将这个值作为返回的promise的成功值
 -->
+
+
+<script type="text/javascript">
+  const p1 = Promise.resolve(1)
+  const p2 = Promise.resolve('atguigu')
+  const p3 = Promise.reject(2)
+
+  Promise.all([p1, p2, 3, p3]).then(values => {
+    console.log(values)
+  }, reason => {
+    console.log(reason)
+  })
+</script>
 
 
 </body>
