@@ -61,7 +61,7 @@
 ## 10). Promise.reject()  用得很少
     手动创建一个已经reject的promise快捷方法
 
-## 11). Promise.all()
+## 11). Promise.all([p1, p2, p3])
     用来实现批量执行多个promise的异步操作, 返回一个新的promise: Promise.all([promise1, promise2, ...])
     只有当所有异步操作都fulfilled后, 新promise才会变为fulfilled状态, 只要有一个变为rejected, 新promise直接变为rejected
     面试题: 实现一次发多个请求, 只有都成功后才去做处理?
