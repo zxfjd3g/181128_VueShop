@@ -143,6 +143,12 @@
 
           // 全部通过了, 密码信登陆的请求
           result = await reqPwdLogin({name, pwd, captcha})
+
+          // 如果失败了, 更新图形验证码
+          if(result.code!==0) {
+            this.updateCaptcha()
+            this.captcha = ''
+          }
         }
 
         // 根据结果做相应处理
