@@ -12,12 +12,14 @@
         <form>
           <div :class="{on: isShowSms}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button :disabled="!isRightPhone" class="get_verification"
-                      :class="{right_phone_number: isRightPhone}" @click.prevent="sendCode">获取验证码</button>
+              <input type="text" maxlength="11" placeholder="手机号" v-model="phone">
+              <button :disabled="!isRightPhone || computeTime>0" class="get_verification"
+                      :class="{right_phone_number: isRightPhone}" @click.prevent="sendCode">
+                {{computeTime>0 ? `已发送(${computeTime}s)` : '获取验证码'}}
+              </button>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码">
+              <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -27,22 +29,25 @@
           <div :class="{on: !isShowSms}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input type="tel" maxlength="11" placeholder="用户名" v-model="name">
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input :type="isShowPwd? 'text' : 'password'" maxlength="8" placeholder="密码" v-model="pwd">
+
+                <div class="switch_button" :class="isShowPwd ? 'on' : 'off'" @click="isShowPwd=!isShowPwd">
+                  <div class="switch_circle" :class="{right: isShowPwd}"></div>
+                  <span class="switch_text">
+                    {{isShowPwd ? 'abc' : ''}}
+                  </span>
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
                 <img class="get_verification" src="./images/captcha.svg" alt="captcha">
               </section>
             </section>
           </div>
-          <button class="login_submit">登录</button>
+          <button class="login_submit" @click.prevent="login">登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
@@ -59,6 +64,12 @@
       return {
         isShowSms: true, // 短信登陆, false: 密码登陆
         phone: '', // 手机号
+        code: '', // 一次性短信验证码
+        name: '', // 用户名
+        pwd: '', // 密码
+        captcha: '', // 一次性图片验证码
+        computeTime: 0, // 倒计时剩余的时间
+        isShowPwd: false, // 是否原样显示密码
       }
     },
 
@@ -71,7 +82,42 @@
 
     methods: {
       sendCode () {
-        alert('----')
+        // alert('----')
+        this.computeTime = 30
+        // 启动循环定时器, 每隔1s, 将计时减1
+        const intervalId = setInterval(() => {
+          this.computeTime--
+          // 一旦变为了0, 停止计时
+          if(this.computeTime===0) {
+            clearInterval(intervalId)
+          }
+        }, 1000)
+      },
+
+      login () {
+        // 进行前台表单验证, 如果不通过, 提示令牌
+        const {phone, code, name, pwd, captcha, isShowSms, isRightPhone} = this
+
+        if (isShowSms) { // 如果是短信登陆
+          if(!isRightPhone) {
+            return alert('必须是一个正确的手机号')
+          } else if (!/^\d{6}$/.test(code)) {
+            return alert('验证码必须是6位数字')
+          }
+        } else { // 如果是密码登陆
+          if(!name.trim()) {
+            return alert('必须输入用户名')
+          } else if(!pwd.trim()) {
+            return alert('必须输入密码')
+          } else if(!/^.{4}$/.test(captcha)) {
+            return alert('验证码必须是4位')
+          }
+        }
+
+
+
+        // 全部通过了, 发登陆的请求
+        console.log('发送登陆请求')
       }
     }
   }
@@ -179,6 +225,8 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                   transition transform .3s
+                  &.right
+                    transform translateX(27px)
             .login_hint
               margin-top 12px
               color #999
