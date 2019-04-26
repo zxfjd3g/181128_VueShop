@@ -43,7 +43,7 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <img ref="captcha" class="get_verification" src="http://localhost:5000/captcha" alt="captcha" @click="updateCaptcha">
               </section>
             </section>
           </div>
@@ -58,11 +58,17 @@
   </section>
 </template>
 <script>
+  import {
+    reqCode,
+    reqPwdLogin,
+    reqSmsLogin
+  } from '../../api'
+  import {RECEIVE_USER} from '../../store/mutation-types'
   export default {
 
     data () {
       return {
-        isShowSms: true, // 短信登陆, false: 密码登陆
+        isShowSms: false, // 短信登陆, false: 密码登陆
         phone: '', // 手机号
         code: '', // 一次性短信验证码
         name: '', // 用户名
@@ -81,29 +87,51 @@
     },
 
     methods: {
-      sendCode () {
+      /*
+      发送短信验证
+       */
+      async sendCode () {
         // alert('----')
         this.computeTime = 30
         // 启动循环定时器, 每隔1s, 将计时减1
         const intervalId = setInterval(() => {
-          this.computeTime--
           // 一旦变为了0, 停止计时
           if(this.computeTime===0) {
             clearInterval(intervalId)
+          } else {
+            this.computeTime--
           }
+
         }, 1000)
+
+        // 请求发送验证码
+        const result = await reqCode(this.phone)
+        if(result.code===0) { // 成功
+          alert('发送短信验证码成功')
+        } else { //失败
+          // 停止计时
+          // clearInterval(this.intervalId)
+          this.computeTime = 0
+          alert('发送短信验证码失败')
+        }
       },
 
-      login () {
+      /*
+      登陆
+       */
+      async login () {
         // 进行前台表单验证, 如果不通过, 提示令牌
         const {phone, code, name, pwd, captcha, isShowSms, isRightPhone} = this
-
+        let result
         if (isShowSms) { // 如果是短信登陆
           if(!isRightPhone) {
             return alert('必须是一个正确的手机号')
           } else if (!/^\d{6}$/.test(code)) {
             return alert('验证码必须是6位数字')
           }
+          // 全部通过了, 发短信登陆的请求
+          result = await reqSmsLogin({phone, code})
+
         } else { // 如果是密码登陆
           if(!name.trim()) {
             return alert('必须输入用户名')
@@ -112,12 +140,29 @@
           } else if(!/^.{4}$/.test(captcha)) {
             return alert('验证码必须是4位')
           }
+
+          // 全部通过了, 密码信登陆的请求
+          result = await reqPwdLogin({name, pwd, captcha})
         }
 
+        // 根据结果做相应处理
+        if(result.code===0) { // 成功了
+          const user = result.data
+          // 保存user(vuex的state中)
+          this.$store.commit(RECEIVE_USER, user)
+          // 跳转到个人中心
+          this.$router.replace('/profile')
+        } else { // 失败了
+          alert(result.msg)
+        }
+      },
 
-
-        // 全部通过了, 发登陆的请求
-        console.log('发送登陆请求')
+      /*
+      更新图片验证码
+       */
+      updateCaptcha () {
+        // 一旦给<img>指定新的src属性, 浏览器就会自动重新请求并更新显示(携带一个时间戳参数)
+        this.$refs.captcha.src = 'http://localhost:5000/captcha?time' + Date.now()
       }
     }
   }

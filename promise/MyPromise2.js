@@ -22,6 +22,11 @@
     value: 将交给onResolve()的成功数据
      */
     function resolve(value) {
+
+      if(self.status!==pending) { // 如果当前不是pending, 直接结束
+        return
+      }
+
       // 立即更新状态, 保存数据
       self.status = 'resolved'
       self.data = value
@@ -39,6 +44,11 @@
     reason: 将交给onRejected()的失败数据
      */
     function reject(reason) {
+
+      if(self.status!==pending) { // 如果当前不是pending, 直接结束
+        return
+      }
+
       // 立即更新状态, 保存数据
       self.status = 'rejected'
       self.data = reason

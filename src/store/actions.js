@@ -4,11 +4,15 @@
 import {
   reqAddress,
   reqCategorys,
-  reqShops
+  reqShops,
+  reqUser
 } from '../api'
 
 import {
-  RECEIVE_ADDRESS, RECEIVE_CATEGORYS, RECEIVE_SHOPS
+  RECEIVE_ADDRESS,
+  RECEIVE_CATEGORYS,
+  RECEIVE_SHOPS,
+  RECEIVE_USER
 } from './mutation-types'
 
 export default {
@@ -52,6 +56,17 @@ export default {
     if (result.code === 0) {
       const shops = result.data
       commit(RECEIVE_SHOPS, shops)
+    }
+  },
+
+  /*
+  获取当前用户的异步action
+   */
+  async getUser ({commit}) {
+    const result = await reqUser()
+    if(result.code===0) {
+      const user = result.data
+      commit(RECEIVE_USER, user)
     }
   }
 }
