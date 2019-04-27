@@ -8,7 +8,6 @@
   import FooterGuide from './components/FooterGuide/FooterGuide'
   // import FooterGuide from '@/components/FooterGuide/FooterGuide'
 
-
   export default {
 
     async mounted () {
