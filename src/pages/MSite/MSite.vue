@@ -65,7 +65,11 @@
     },
 
     computed: {
-      ...mapState(['address', 'categorys']),
+      // ...mapState(['address', 'categorys']),
+      ...mapState({
+        address: state => state.msite.address,  // state是总状态
+        categorys: state => state.msite.categorys
+      }),
 
       /*
       根据categorys生成二维数组

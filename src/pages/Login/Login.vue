@@ -8,11 +8,12 @@
           <a href="javascript:;" :class="{on: !isShowSms}" @click="isShowSms=false">密码登录</a>
         </div>
       </div>
+
       <div class="login_content">
         <form>
           <div :class="{on: isShowSms}">
             <section class="login_message">
-              <input type="text" maxlength="11" placeholder="手机号" v-model="phone"
+              <input type="text" maxlength="11" placeholder="手机号2222" v-model="phone"
                   name="phone" v-validate="'required|mobile'">
               <button :disabled="!isRightPhone || computeTime>0" class="get_verification"
                       :class="{right_phone_number: isRightPhone}" @click.prevent="sendCode">
@@ -157,7 +158,7 @@
           if(result.code===0) { // 成功了
             const user = result.data
             // 保存user(vuex的state中)
-            this.$store.commit(RECEIVE_USER, user)
+            this.$store.commit(RECEIVE_USER, user) // 查找所有vuex模块中的mutation调用
             // 跳转到个人中心
             this.$router.replace('/profile')
           } else { // 失败了

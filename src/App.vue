@@ -11,7 +11,7 @@
   export default {
 
     async mounted () {
-      this.$store.dispatch('getAddress')
+      this.$store.dispatch('getAddress')// 去vuex的所有模块中查找对应的action调用
       this.$store.dispatch('getUser')
     },
 

@@ -21,10 +21,13 @@ VeeValidate.Validator.localize('zh_CN', {
 
 // 自定义验证规则
 VeeValidate.Validator.extend('mobile', {
-  messages: {
-    zh_CN:field => field + '必须是11位手机号码',
-  },
+ /* messages: {
+    zh_CN:field => field + '必须是11位手机号码----',
+  },*/
+  // 验证的方法: 验证通过返回true, 返回false验证不通过
   validate: value => {
     return /^1\d{10}$/.test(value)
-  }
+  },
+  // 得到错误信息的方法
+  getMessage: field => field + '必须是11位手机号码'
 })

@@ -35,12 +35,10 @@
 ## 4). 自定义验证规则
     import VeeValidate from 'vee-validate'
     VeeValidate.Validator.extend('mobile', {
-      messages: {
-        zh_CN:field => field + '必须是11位手机号码',
-      },
       validate: value => {
         return /^1\d{10}$/.test(value)
-      }
+      },
+      getMessage: field => field + '必须是11位手机号码'
     })
 
 

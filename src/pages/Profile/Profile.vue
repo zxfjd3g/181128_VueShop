@@ -111,7 +111,9 @@
   export default {
     components: {MtButton},
     computed: {
-      ...mapState(['user'])
+      ...mapState({
+        user: state => state.user.user
+      })
     },
 
     methods: {
