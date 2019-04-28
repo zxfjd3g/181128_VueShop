@@ -80,7 +80,7 @@
 
     data () {
       return {
-        isShowSms: false, // 短信登陆, false: 密码登陆
+        isShowSms: true, // 短信登陆, false: 密码登陆
         phone: '', // 手机号
         code: '', // 一次性短信验证码
         name: '', // 用户名
