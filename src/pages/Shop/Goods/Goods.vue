@@ -2,9 +2,10 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper">
-        <ul>
+        <ul ref="leftUl">
           <!--current-->
-          <li class="menu-item" v-for="(good, index) in goods" :key="index">
+          <li class="menu-item" v-for="(good, index) in goods" :key="index"
+              :class="{current: currentIndex===index}" @click="goCurrent(index)">
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
@@ -13,7 +14,7 @@
         </ul>
       </div>
       <div class="foods-wrapper">
-        <ul>
+        <ul ref="rightUl">
           <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
@@ -47,21 +48,123 @@
 <script>
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
+
   export default {
+
+    data() {
+      return {
+        scrollY: 0, // 右侧列表滑动的坐标  在右侧滑动过程中更新此值
+        tops: [], // 右侧所有分类li的top值  在列表初始显示之后计算一次即可
+      }
+    },
 
     computed: {
       ...mapState({
         goods: state => state.shop.goods
-      })
+      }),
+
+      // 当前分类的下标
+      currentIndex() {
+        const {scrollY, tops} = this
+        /*
+        findIndex(): 查找到第一个匹配元素的下标
+          [0, 4, 7, 15, 19]
+          7 8 14
+          scrollY>=top && scrollY<nextTop
+         */
+        const index = tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
+
+        if(index!=this.index && this.leftScroll) {
+          // 保存最新的下标
+          this.index = index
+          // 一旦currentIndex发生改变, 将左侧列表滑动到对应的分类项(有可能达不到这个目标, 但至少是在可见范围内的)
+          const li = this.$refs.leftUl.children[index]
+          this.leftScroll.scrollToElement(li, 300)
+        }
+
+
+        return index
+      }
     },
 
     watch: {
       // 利用watch + nextTick 解决better-scroll不能滑动问题
-      goods () { // goods数据有了
+      goods() { // goods数据有了
         this.$nextTick(() => { // goods列表显示了
-          new BScroll('.menu-wrapper')
-          new BScroll('.foods-wrapper')
+          this.initScroll()
+          this.initTops()
+
         })
+      }
+    },
+
+    methods: {
+
+      /*
+      在列表第一次显示列表后, 统计所有右侧分类li的top并更新tops
+       */
+      initTops () {
+        const tops = []
+
+        // 统计所有分类li的top
+        let top = 0
+        tops.push(top)
+        const lis = this.$refs.rightUl.children
+        Array.from(lis).forEach(li => {
+          top += li.clientHeight
+          tops.push(top)
+        })
+
+        this.tops = tops
+        console.log('tops', tops)
+      },
+
+      /*
+      初始化滑动对象
+      1). 触发滚动回调的时机
+          实时: 高频触发
+          非实时: 低频触发
+      2). 触发滚动的方法
+          触摸
+          惯性
+          编码
+       */
+      initScroll () {
+        // 创建左侧滚动对象
+        this.leftScroll = new BScroll('.menu-wrapper', {
+          click: true, // 开启分发自定义事件
+        })
+        // 创建右侧滚动对象
+        this.rightScroll = new BScroll('.foods-wrapper', {
+           probeType: 1, // 非实时  触摸
+          // probeType: 2, // 实时 触摸
+          // probeType: 3, // 实时 触摸 / 惯性 / 编码
+          click: true, // 开启分发自定义事件
+        })
+
+        // 监视右侧滚动对象的scroll事件
+        this.rightScroll.on('scroll', ({x, y}) => {
+          console.log('scroll', x, y)
+          this.scrollY = Math.abs(y)
+        })
+
+        // 监视右侧滚动对象的scrollEnd事件
+        this.rightScroll.on('scrollEnd', ({x, y}) => {
+          console.log('scrollEnd', x, y)
+          this.scrollY = Math.abs(y)
+        })
+      },
+
+      // 选择当前分类项, 右侧滑动到对应位置
+      goCurrent (index) {
+        // 得到目标位置的top
+        const top = this.tops[index]
+
+        // 立即更新当前分类项
+        this.scrollY = top
+
+        // 通过编码实现滑动
+        this.rightScroll.scrollTo(0, -top, 300)
       }
     }
   }
