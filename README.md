@@ -176,3 +176,41 @@
           transition
         xxx-enter / xxx-leave-to
           隐藏时的样式
+          
+# day05
+## 1. 基本滑动
+    使用better-scroll
+    new BScroll(wrapDiv, {})
+    创建BScroll对象的时机
+      watch + $nextTick()
+      自定义callback + $nextTick
+      利用dispatch()返回promise
+    better-scroll禁用了原生的dom事件, 使用的是自定义事件
+    
+## 2. 滑动右侧列表, 左侧的当前分类会变化
+    1). 设计一个计算属性: currentIndex代表当前分类的下标
+    2). 相关数据
+      滚动的y坐标: scrollY---> 给右侧列表绑定一个滚动的监听
+      右侧分类<li>的top数组: tops-->列表第一次显示之后统计
+    3). 计算的逻辑
+       scrollY>=top && scrollY<nextTop
+    4). 在列表显示之后确定tops
+    5). 绑定scroll/scrollEnd监听, 在回调中设置scrollY值
+    6). 关于滑动
+        1). 触发滚动回调的时机
+            实时: 高频触发
+            非实时: 低频触发
+        2). 触发滚动的方法
+            触摸
+            惯性
+            编码
+            
+## 3). 点击左侧分类项, 右侧列表滑动到对应位置
+    1). 绑定点击监听
+    2). 通过rightScroll滚动到对应的位置: scroll.scrollTo(0, -tops[index])
+    3). 立即更新scrollY
+
+## 4. 如何保证当前分类项总是可见?
+    一旦当前分类变化了, 让左侧列表滑动当前分类处
+    如何判断变化了?
+    scroll.scrollToElement(li)
