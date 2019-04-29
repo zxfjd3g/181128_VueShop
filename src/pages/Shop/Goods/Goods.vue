@@ -18,7 +18,8 @@
           <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
-              <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index">
+              <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods"
+                  :key="index" @click="showFood(food)">
                 <div class="icon">
                   <img width="57" height="57" :src="food.icon">
                 </div>
@@ -33,7 +34,7 @@
                     <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    CartControl组件
+                    <CartControl :food="food"/>
                   </div>
                 </div>
               </li>
@@ -42,6 +43,8 @@
         </ul>
       </div>
     </div>
+
+    <Food ref="food" :food="food"/> <!--一个组件标签就是一个组件对象: 组件标签对象就是组件对象-->
   </div>
 </template>
 
@@ -49,12 +52,15 @@
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
 
+  import Food from '../../../components/Food/Food.vue'
+
   export default {
 
     data() {
       return {
         scrollY: 0, // 右侧列表滑动的坐标  在右侧滑动过程中更新此值
         tops: [], // 右侧所有分类li的top值  在列表初始显示之后计算一次即可
+        food: {}, // 需要显示的当前food
       }
     },
 
@@ -87,12 +93,20 @@
       }
     },
 
+    mounted () {
+      // 如果数据已经有了, 说明现在已经显示列表了, 创建Bscroll对象形成滑动
+      if(this.goods.length>0) {
+        this._initScroll()
+        this._initTops()
+      }
+    },
+
     watch: {
       // 利用watch + nextTick 解决better-scroll不能滑动问题
       goods() { // goods数据有了
         this.$nextTick(() => { // goods列表显示了
-          this.initScroll()
-          this.initTops()
+          this._initScroll()
+          this._initTops()
 
         })
       }
@@ -103,7 +117,7 @@
       /*
       在列表第一次显示列表后, 统计所有右侧分类li的top并更新tops
        */
-      initTops () {
+      _initTops () {
         const tops = []
 
         // 统计所有分类li的top
@@ -129,7 +143,7 @@
           惯性
           编码
        */
-      initScroll () {
+      _initScroll () {
         // 创建左侧滚动对象
         this.leftScroll = new BScroll('.menu-wrapper', {
           click: true, // 开启分发自定义事件
@@ -165,7 +179,22 @@
 
         // 通过编码实现滑动
         this.rightScroll.scrollTo(0, -top, 300)
+      },
+
+      /*
+      显示food详情界面
+       */
+      showFood (food) {
+
+        // 更新food数据
+        this.food = food
+        // 显示food
+        this.$refs.food.toggleShow()
       }
+    },
+
+    components: {
+      Food
     }
   }
 </script>

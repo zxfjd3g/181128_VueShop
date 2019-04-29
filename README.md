@@ -183,8 +183,6 @@
     new BScroll(wrapDiv, {})
     创建BScroll对象的时机
       watch + $nextTick()
-      自定义callback + $nextTick
-      利用dispatch()返回promise
     better-scroll禁用了原生的dom事件, 使用的是自定义事件
     
 ## 2. 滑动右侧列表, 左侧的当前分类会变化
@@ -214,3 +212,14 @@
     一旦当前分类变化了, 让左侧列表滑动当前分类处
     如何判断变化了?
     scroll.scrollToElement(li)
+    
+# day06
+## 1. Food
+
+## 2. CartControl
+
+## 3. ShopCart
+
+## 4. Ratings
+
+## 5. Info

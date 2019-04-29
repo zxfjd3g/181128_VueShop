@@ -5,6 +5,7 @@ import {Button} from 'mint-ui'
 import router from './router'
 import Header from './components/Header/Header.vue'
 import Star from './components/Star/Star.vue'
+import CartControl from './components/CartControl/CartControl.vue'
 import store from './store'
 import  './validate'
 import './mock/mock-server'
@@ -12,6 +13,7 @@ import './mock/mock-server'
 // 注册全局组件
 Vue.component('Header', Header)
 Vue.component('Star', Star)
+Vue.component('CartControl', CartControl)
 Vue.component(Button.name, Button)   //mt-button
 
 new Vue({
