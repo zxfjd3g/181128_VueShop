@@ -26,7 +26,16 @@
 
       <Split/>
 
-      <div>RatingSelect组件</div>
+      <!--<RatingsFilter
+        :onlyText="onlyText"
+        :selectType="selectType"
+        @setSelectType="setSelectType"
+        @toggleOnlyText="toggleOnlyText"
+        />-->
+      <RatingsFilter
+        :onlyText="onlyText"
+        :selectType="selectType"
+        />
 
       <div class="rating-wrapper">
         <ul>
@@ -56,6 +65,8 @@
   import {mapState} from 'vuex'
   import BScroll from 'better-scroll'
 
+  import RatingsFilter from '../../../components/RatingsFilter/RatingsFilter.vue'
+
   export default {
 
     data () {
@@ -70,6 +81,10 @@
       new BScroll('.ratings', {
         click: true
       })
+
+      // 绑定自定义监听
+      this.$eventBus.$on('setSelectType', this.setSelectType)
+      this.$eventBus.$on('toggleOnlyText', this.toggleOnlyText)
     },
 
     computed: {
@@ -109,6 +124,20 @@
 
         })
       }
+    },
+
+    methods: {
+      setSelectType (type) {
+        console.log('setSelectType()', this)
+        this.selectType = type
+      },
+      toggleOnlyText () {
+        this.onlyText = !this.onlyText
+      }
+    },
+
+    components: {
+      RatingsFilter
     }
   }
 </script>

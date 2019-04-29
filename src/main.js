@@ -18,6 +18,19 @@ Vue.component('CartControl', CartControl)
 Vue.component('Split', Split)
 Vue.component(Button.name, Button)   //mt-button
 
+/*
+在Vue原型对象添加一个事件总线对象(就是一个vm)
+
+  子组件向父组件通信
+      <Child @eventName='cb'>
+      this.$emit('eventName', data)
+
+  任意关系组件间通信(也可以用pubsub):
+      $eventBus.$on('eventName', cb)
+      $eventBus.$emit('eventName', data)
+ */
+Vue.prototype.$eventBus = new Vue()
+
 new Vue({
   el: '#app',  // el元素会被<App/>
   /*components: {
