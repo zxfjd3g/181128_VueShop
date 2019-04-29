@@ -42,6 +42,8 @@
           </li>
         </ul>
       </div>
+
+      <ShopCart/>
     </div>
 
     <Food ref="food" :food="food"/> <!--一个组件标签就是一个组件对象: 组件标签对象就是组件对象-->
@@ -53,6 +55,8 @@
   import {mapState} from 'vuex'
 
   import Food from '../../../components/Food/Food.vue'
+  import ShopCart from '../../../components/ShopCart/ShopCart.vue'
+  // import ShopCart from 'components/ShopCart/ShopCart.vue'
 
   export default {
 
@@ -78,9 +82,9 @@
           7 8 14
           scrollY>=top && scrollY<nextTop
          */
-        const index = tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
+        const index = tops.findIndex((top, index) => scrollY >= top && scrollY < tops[index + 1])
 
-        if(index!=this.index && this.leftScroll) {
+        if (index != this.index && this.leftScroll) {
           // 保存最新的下标
           this.index = index
           // 一旦currentIndex发生改变, 将左侧列表滑动到对应的分类项(有可能达不到这个目标, 但至少是在可见范围内的)
@@ -93,9 +97,9 @@
       }
     },
 
-    mounted () {
+    mounted() {
       // 如果数据已经有了, 说明现在已经显示列表了, 创建Bscroll对象形成滑动
-      if(this.goods.length>0) {
+      if (this.goods.length > 0) {
         this._initScroll()
         this._initTops()
       }
@@ -117,7 +121,7 @@
       /*
       在列表第一次显示列表后, 统计所有右侧分类li的top并更新tops
        */
-      _initTops () {
+      _initTops() {
         const tops = []
 
         // 统计所有分类li的top
@@ -143,14 +147,14 @@
           惯性
           编码
        */
-      _initScroll () {
+      _initScroll() {
         // 创建左侧滚动对象
         this.leftScroll = new BScroll('.menu-wrapper', {
           click: true, // 开启分发自定义事件
         })
         // 创建右侧滚动对象
         this.rightScroll = new BScroll('.foods-wrapper', {
-           probeType: 1, // 非实时  触摸
+          probeType: 1, // 非实时  触摸
           // probeType: 2, // 实时 触摸
           // probeType: 3, // 实时 触摸 / 惯性 / 编码
           click: true, // 开启分发自定义事件
@@ -170,7 +174,7 @@
       },
 
       // 选择当前分类项, 右侧滑动到对应位置
-      goCurrent (index) {
+      goCurrent(index) {
         // 得到目标位置的top
         const top = this.tops[index]
 
@@ -184,7 +188,7 @@
       /*
       显示food详情界面
        */
-      showFood (food) {
+      showFood(food) {
 
         // 更新food数据
         this.food = food
@@ -194,7 +198,8 @@
     },
 
     components: {
-      Food
+      Food,
+      ShopCart
     }
   }
 </script>
