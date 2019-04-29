@@ -24,7 +24,7 @@
         <div class="shopcart-list" v-show="listShow">
           <div class="list-header">
             <h1 class="title">购物车</h1>
-            <span class="empty">清空</span>
+            <span class="empty" @click="$store.dispatch('clearCart')">清空</span>
           </div>
           <div class="list-content">
             <ul>

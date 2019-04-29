@@ -6,6 +6,7 @@ import router from './router'
 import Header from './components/Header/Header.vue'
 import Star from './components/Star/Star.vue'
 import CartControl from './components/CartControl/CartControl.vue'
+import Split from './components/Split/Split.vue'
 import store from './store'
 import  './validate'
 import './mock/mock-server'
@@ -14,6 +15,7 @@ import './mock/mock-server'
 Vue.component('Header', Header)
 Vue.component('Star', Star)
 Vue.component('CartControl', CartControl)
+Vue.component('Split', Split)
 Vue.component(Button.name, Button)   //mt-button
 
 new Vue({
