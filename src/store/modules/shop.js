@@ -51,7 +51,7 @@ const mutations = {
 
       // 一旦数量为0, 将food从购物车中删除
       if(food.count===0) {
-        state.cartFoods.splice(cartFoods.indexOf(food), 1)
+        state.cartFoods.splice(state.cartFoods.indexOf(food), 1)
       }
     }
   },
