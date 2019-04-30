@@ -10,6 +10,7 @@ import Split from './components/Split/Split.vue'
 import store from './store'
 import  './validate'
 import './mock/mock-server'
+import './filters'
 
 // 注册全局组件
 Vue.component('Header', Header)

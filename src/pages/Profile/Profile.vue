@@ -114,6 +114,7 @@
 
   </section>
 </template>
+
 <script>
   import {MessageBox} from 'mint-ui'
   import {mapState} from 'vuex'
@@ -138,6 +139,7 @@
     }
   }
 </script>
+
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/mixins.styl"
 

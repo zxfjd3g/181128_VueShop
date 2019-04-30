@@ -52,6 +52,7 @@ const mutations = {
 
       // 一旦数量为0, 将food从购物车中删除
       if(food.count===0) {
+        delete food.count  // 删除对象中指定属性
         state.cartFoods.splice(state.cartFoods.indexOf(food), 1)
       }
     }
@@ -59,7 +60,7 @@ const mutations = {
 
   [CLEAR_CART] (state) {
     // 清除购物车中所有food的count
-    state.cartFoods.forEach(food => food.count = 0)
+    state.cartFoods.forEach(food => delete food.count)
     // 重置购物车数组
     state.cartFoods = []
   }
