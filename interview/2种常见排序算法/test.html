@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>$Title$</title>
+</head>
+<body>
+<script type="text/javascript">
+
+  // 冒泡排序
+  function bubbleSort(arr) {
+    const len = arr.length
+    let temp
+    for (var i = len-1; i >=1; i--) { // i为被比较数(b)的区间: [len-1, 1]
+      for (var j = 0; j < i; j++) { // j为比较数据(a)的区间: [0, i]
+        if(arr[j]>arr[j+1]) {// 一旦左边的大于右边, 就交换位置
+          temp = arr[j]
+          arr[j] = arr[j+1]
+          arr[j+1] = temp
+        }
+      }
+    }
+    return arr
+  }
+
+  const arr = [5, 2, 8, 3, 7, 6, 4, 1]
+
+  console.log(bubbleSort(arr))
+
+  // 选择排序
+  function selectionSort(arr) {
+    const len = arr.length
+    let minIndex,temp
+    for (var i = 0; i < len-1; i++) { // 下标小于i的都是有序
+      minIndex = i
+      for (var j = i+1; j <len; j++) {
+        if(arr[minIndex]>arr[j]) {
+          minIndex = j
+        }
+      }
+      if(minIndex!==i) {
+        temp = arr[minIndex]
+        arr[minIndex] = arr[i]
+        arr[i] = temp
+      }
+    }
+    return arr
+  }
+  // console.log(selectionSort(arr))
+
+</script>
+</body>
+</html>

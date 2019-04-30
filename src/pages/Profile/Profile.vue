@@ -22,15 +22,13 @@
               {{user.phone ? user.phone : '暂无绑定手机号'}}
             </span>
           </p>
-
-
         </div>
-
         <span class="arrow">
           <i class="iconfont icon-jiantou1"></i>
         </span>
       </a>
     </section>
+
     <section class="profile_info_data border-1px">
       <ul class="info_data_list">
         <a href="javascript:" class="info_data_link">
@@ -47,6 +45,7 @@
         </a>
       </ul>
     </section>
+
     <section class="profile_my_order border-1px">
       <!-- 我的订单 -->
       <a href='javascript:' class="my_order">
@@ -85,6 +84,7 @@
         </div>
       </a>
     </section>
+
     <section class="profile_my_order border-1px">
       <!-- 服务中心 -->
       <a href="javascript:" class="my_order">
@@ -99,9 +99,19 @@
         </div>
       </a>
     </section>
+
     <section class="profile_my_order border-1px">
       <mt-button type="danger" style="width: 100%" @click="logout" v-if="user._id">退出登陆</mt-button>
     </section>
+
+    <section class="profile_my_order border-1px">
+      <router-link to="/a">AAA</router-link>
+      &nbsp;&nbsp;
+      <router-link to="/b">BBB</router-link>
+      &nbsp;&nbsp;
+      <router-link to="/login">去登陆</router-link>
+    </section>
+
   </section>
 </template>
 <script>

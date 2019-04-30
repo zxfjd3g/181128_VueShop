@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>$Title$</title>
+</head>
+<body>
+<script type="text/javascript" src="Stack.js"></script>
+<script type="text/javascript">
+  const stack = new Stack()
+  stack.push('abc')
+  stack.push(123)
+  stack.push(true)
+  console.log(stack.peek(), stack.size(), stack.isEmpty()) // true, 3, false
+  stack.pop()
+  console.log(stack.peek(), stack.size(), stack.isEmpty()) // 123, 2, false
+  stack.clear()
+  console.log(stack.size(), stack.isEmpty()) // 0, true
+</script>
+</body>
+</html>

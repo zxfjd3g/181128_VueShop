@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>数组扁平化</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+  /*
+  方法一: 递归 + reduce() + concat()
+   */
+  function flatten(arr) {
+    return arr.reduce((pre, item) => {
+      return pre.concat(Array.isArray(item) ? flatten(item) : item)
+    }, [])
+  }
+
+  const arr = [1, [3, [2, 4]]]
+  console.log(flatten(arr))  // [1, 3, 2, 4]
+
+  /*
+  方法二: ... + some() + concat()
+   */
+  function flatten2(arr) {
+    while (arr.some(item => Array.isArray(item))) {  // every()
+      arr = [].concat(...arr);
+    }
+    return arr;
+  }
+
+
+  console.log(flatten2(arr))
+
+  const arr2 = [1, 3, 4, 5, 7, 9, 10]  // 所有奇数的和25
+  const result = arr2.reduce((pre, item) => pre + (item%2===1 ? item : 0), 0)
+  console.log(result)
+
+
+</script>
+
+</body>
+</html>

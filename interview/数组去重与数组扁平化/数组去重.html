@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>数组去重</title>
+</head>
+<body>
+
+<script type="text/javascript">
+  /*
+  方法1: 利用forEach()和indexOf()
+    说明: 本质是双重遍历, 效率差些
+   */
+  Array.prototype.distinct = function () {
+    const result = []
+    this.forEach(item => {
+      if (result.indexOf(item) === -1) {
+        result.push(item)
+      }
+    })
+    return result
+  }
+  var arr = [5, 7, 1, 5, 4, 7, 1, 6];
+  console.log(arr.distinct())  // [5, 7, 1, 4, 6]
+
+  /*
+  方法2: 利用forEach() + 对象容器
+  说明: 只需一重遍历, 效率高
+   */
+  Array.prototype.distinct2 = function () {
+    const result = []
+    const obj = {} // 对象容器, 属性名是item, 属性值为
+    this.forEach(item => {
+      if (!obj[item]) {
+        obj[item] = true
+        result.push(item)
+      }
+    })
+    return result
+  }
+  console.log(arr.distinct2())
+
+  /*
+  方法3: 利用ES6语法
+      1). from + Set
+      2). ... + Set
+  说明: 编码简洁
+   */
+  Array.prototype.distinct3 = function () {
+    return Array.from(new Set(this))
+  }
+  console.log(arr.distinct3())
+
+  Array.prototype.distinct4 = function () {
+    return [...new Set(this)]
+  }
+  console.log(arr.distinct4())
+
+</script>
+
+</body>
+</html>

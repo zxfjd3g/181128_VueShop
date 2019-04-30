@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>$Title$</title>
+</head>
+<body>
+<script type="text/javascript" src="./Queue.js"></script>
+<script type="text/javascript">
+  // 创建队列
+  const queue = new Queue()
+  queue.enqueue('abc')
+  queue.enqueue('123')
+  queue.enqueue(true)
+  console.log(queue.dequeue())  // abc
+  console.log(queue.front()) // 123
+  queue.clear()
+  console.log(queue.size(), queue.isEmpty())
+
+
+</script>
+</body>
+</html>

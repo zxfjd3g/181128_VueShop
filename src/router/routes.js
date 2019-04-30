@@ -7,6 +7,12 @@ import Shop from '../pages/Shop/Shop.vue'
 import Goods from '../pages/Shop/Goods/Goods.vue'
 import Ratings from '../pages/Shop/Ratings/Ratings.vue'
 import Info from '../pages/Shop/Info/Info.vue'
+
+import A from '../pages/test/A.vue'
+import B from '../pages/test/B.vue'
+import B1 from '../pages/test/B1.vue'
+import B2 from '../pages/test/B2.vue'
+
 /*
 所有路由的数组
  */
@@ -66,8 +72,27 @@ export default [
     ]
   },
 
+  {
+    path: '/a',
+    component: A
+  },
+  {
+    path: '/b',
+    component: B,
+    children: [
+      {
+        path: '/b/b1',
+        component: B1
+      },
+      {
+        path: '/b/b2',
+        component: B2
+      },
+    ]
+  },
+
   { // 自动跳转的路由
     path: '/',
     redirect: '/msite'
-  }
+  },
 ]
