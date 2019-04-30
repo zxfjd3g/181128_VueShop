@@ -1,7 +1,18 @@
-import MSite from '../pages/MSite/MSite.vue'
-import Search from '../pages/Search/Search.vue'
-import Order from '../pages/Order/Order.vue'
-import Profile from '../pages/Profile/Profile.vue'
+// import MSite from '../pages/MSite/MSite.vue'
+// import Search from '../pages/Search/Search.vue'
+// import Order from '../pages/Order/Order.vue'
+// import Profile from '../pages/Profile/Profile.vue'
+
+/*
+使用import()加载一个模块: 被加载的模块会被拆分打包(code split: 代码分割)
+将配置路由组件时: component配置的不组件, 而是返回一个组件的函数,
+              只有当请求对应的path时, 才会执行函数获取组件模块代码
+ */
+const MSite = () => import('../pages/MSite/MSite.vue')
+const Search = () => import('../pages/Search/Search.vue')
+const Order = () => import('../pages/Order/Order.vue')
+const Profile = () => import('../pages/Profile/Profile.vue')
+
 import Login from '../pages/Login/Login.vue'
 import Shop from '../pages/Shop/Shop.vue'
 import Goods from '../pages/Shop/Goods/Goods.vue'

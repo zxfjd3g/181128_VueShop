@@ -176,6 +176,23 @@
         // 一旦给<img>指定新的src属性, 浏览器就会自动重新请求并更新显示(携带一个时间戳参数)
         this.$refs.captcha.src = 'http://localhost:5000/captcha?time' + Date.now()
       }
+    },
+
+    /*
+    在进行当前组件前调用
+    在回调函数调用时, 组件对象还没有创建, this不是组件对象
+     */
+    beforeRouteEnter (to, from, next) {
+      // next(callback): 回调函数在组件对象创建后调用callback
+      next((comp) => {
+        // 如果当前用户已经登陆, 自动跳转到个人中心
+        if (comp.$store.state.user.user._id) {
+           next('/profile')
+        } else {
+          // 否则放行
+          next()
+        }
+      })
     }
   }
 </script>

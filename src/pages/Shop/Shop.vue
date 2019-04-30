@@ -14,8 +14,10 @@
       </div>
     </div>
 
-    <router-view/>
-
+    <!--缓存子路由组件对象-->
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
 <script>

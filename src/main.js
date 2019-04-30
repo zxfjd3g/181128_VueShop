@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import {Button} from 'mint-ui'
+import VueLazyload from 'vue-lazyload'
 
 import router from './router'
 import Header from './components/Header/Header.vue'
@@ -11,6 +12,11 @@ import store from './store'
 import  './validate'
 import './mock/mock-server'
 import './filters'
+import loading from './common/images/loading.gif'
+
+Vue.use(VueLazyload, { // 内部定义了一个指令 lazy
+  loading
+})
 
 // 注册全局组件
 Vue.component('Header', Header)
@@ -31,6 +37,8 @@ Vue.component(Button.name, Button)   //mt-button
       $eventBus.$emit('eventName', data)
  */
 Vue.prototype.$eventBus = new Vue()
+// 将store保存为Vue的属性
+Vue.store = store
 
 new Vue({
   el: '#app',  // el元素会被<App/>
