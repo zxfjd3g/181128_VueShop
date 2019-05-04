@@ -112,6 +112,20 @@ const getters = {
   totalPrice (state) {
     return state.cartFoods.reduce((pre, food) => pre + food.count*food.price, 0)
   },
+
+  /*
+  总商家评论数
+   */
+  totalRatingsCount (state) {
+    return state.ratings.length
+  },
+
+  /*
+  总商家推荐评论数
+   */
+  positiveRatingsCount (state) {
+    return state.ratings.reduce((pre, rating) => pre + (rating.rateType===0 ? 1 : 0), 0)
+  }
 }
 
 export default {

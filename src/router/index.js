@@ -8,7 +8,7 @@ import routes from './routes'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  // mode: 'history', // 去除路径中的#
+  mode: 'history', // 去除路径中的#
   // 应用中所有路由
   routes
 })
@@ -30,12 +30,6 @@ router.beforeEach((to, from, next) => {
   } else { // 如果不是/a或/b, 直接放行
     next()
   }
-
-
-
-
-  // 放行
-  next()
 })
 
 export default router

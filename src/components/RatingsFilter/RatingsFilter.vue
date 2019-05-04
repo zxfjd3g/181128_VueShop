@@ -1,14 +1,14 @@
 <template>
-  <div class="ratingselect">
+  <div class="ratings-filter">
     <div class="rating-type border-1px">
       <span class="block" :class="{active: selectType===2}" @click="setType(2)">
-        全部<span class="count">1</span>
+        全部<span class="count">{{totalRatingsCount}}</span>
       </span>
       <span class="block" :class="{active: selectType===0}" @click="setType(0)">
-        推荐<span class="count">1</span>
+        推荐<span class="count">{{positiveRatingsCount}}</span>
       </span>
       <span class="block" :class="{active: selectType===1}" @click="setType(1)">
-        吐槽<span class="count">0</span>
+        吐槽<span class="count">{{totalRatingsCount-positiveRatingsCount}}</span>
       </span>
     </div>
     <div class="switch" :class="{on: onlyText}" @click="toggle">
@@ -18,10 +18,16 @@
   </div>
 </template>
 <script>
+  import {mapGetters} from 'vuex'
+
   export default {
     props: {
       onlyText: Boolean,
       selectType: Number
+    },
+
+    computed: {
+      ...mapGetters(['totalRatingsCount', 'positiveRatingsCount']),
     },
 
     methods: {
@@ -41,7 +47,7 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/mixins.styl"
 
-  .ratingselect
+  .ratings-filter
     .rating-type
       padding: 18px 0
       margin: 0 18px

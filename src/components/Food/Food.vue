@@ -27,7 +27,6 @@
       <div class="food-cover" @click="toggleShow"></div>
     </div>
   </transition>
-
 </template>
 
 <script>
@@ -162,5 +161,4 @@
       left 0
       z-index 55
       background-color rgba(0, 0, 0, 0.5)
-
 </style>

@@ -19,15 +19,17 @@
     console.log('remove', data)
   })
 
-  // PubSub.unsubscribe(token1)
-  // PubSub.unsubscribe('add')
+  PubSub.unsubscribe(token1)
+  PubSub.unsubscribe('add')
+  PubSub.unsubscribe()
 
   PubSub.publish('add', 'atguigu')
   console.log('publish() after')
-  PubSub.publishSync('add', 'damu')
-  console.log('publishSync() after')
 
-  PubSub.publish('remove', 123)
+  //  PubSub.publishSync('add', 'damu')
+  //  console.log('publishSync() after')
+
+  // PubSub.publish('remove', 123)
 </script>
 </body>
 </html>

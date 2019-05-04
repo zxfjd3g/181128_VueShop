@@ -2,16 +2,16 @@
   <section class="msite">
     <!--首页头部-->
     <Header :title="address.name || '正在获取中...'">
-      <span class="header_search" slot="left">
+      <span class="header_search" slot="left" @click="$router.replace('/search')">
         <i class="iconfont icon-sousuo"></i>
       </span>
-
       <span class="header_login" slot="right">
-        <span class="header_login_text">登录|注册</span>
+        <span class="header_login_text" v-if="!user._id" @click="$router.push('/login')">登录|注册</span>
+        <i class="iconfont icon-person" v-else @click="$router.push('/userinfo')"></i>
       </span>
     </Header>
 
-    <div class="content">
+    <scroller class="content">
       <!--首页导航-->
       <nav class="msite_nav">
         <div class="swiper-container" v-if="categorys.length>0">
@@ -38,8 +38,7 @@
         </div>
         <ShopList/>
       </div>
-    </div>
-
+    </scroller>
   </section>
 </template>
 <script>
@@ -72,7 +71,8 @@
       // ...mapState(['address', 'categorys']),
       ...mapState({
         address: state => state.msite.address,  // state是总状态
-        categorys: state => state.msite.categorys
+        categorys: state => state.msite.categorys,
+        user: state => state.user.user
       }),
 
       /*

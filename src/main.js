@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import {Button} from 'mint-ui'
 import VueLazyload from 'vue-lazyload'
+import VueScroller from 'vue-scroller'
 
 import router from './router'
 import Header from './components/Header/Header.vue'
@@ -17,6 +18,7 @@ import loading from './common/images/loading.gif'
 Vue.use(VueLazyload, { // 内部定义了一个指令 lazy
   loading
 })
+Vue.use(VueScroller)
 
 // 注册全局组件
 Vue.component('Header', Header)

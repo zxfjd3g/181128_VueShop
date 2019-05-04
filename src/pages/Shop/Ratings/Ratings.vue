@@ -65,7 +65,7 @@
   import {mapState} from 'vuex'
   import BScroll from 'better-scroll'
 
-  import RatingsFilter from '../../../components/RatingsFilter/RatingsFilter.vue'
+  import RatingsFilter from 'components/RatingsFilter/RatingsFilter.vue'
 
   export default {
 
